@@ -499,8 +499,26 @@ class App(ctk.CTk):
         if path: self.dir_var.set(path)
            
     def _open_folder(self):
-        try: os.startfile(self.dir_var.get())
-        except Exception as e: messagebox.showerror("Åpne mappe", f"Kunne ikke åpne mappen.\n{e}")
+        # Konverter lagringsbanen til et Path-objekt
+        folder_path = Path(self.dir_var.get())
+        
+        try:
+            if not folder_path.exists():
+                # Prøv å opprette mappen hvis den mangler
+                folder_path.mkdir(parents=True, exist_ok=True)
+                self._log(f"Opprettet manglende mappe: {folder_path}")
+
+            # Åpne mappen i filutforskeren
+            os.startfile(str(folder_path))
+            
+        except FileNotFoundError:
+            # Fang den spesifikke feilen som skjedde
+            messagebox.showerror("Åpne mappe", 
+                                 f"Kunne ikke åpne mappen '{folder_path}'.\n"
+                                 "Kontroller at banen er riktig og eksisterer.")
+        except Exception as e:
+            # Generell feilhåndtering
+            messagebox.showerror("Åpne mappe", f"En feil oppstod ved forsøk på å åpne mappen:\n{e}")
            
     def _validate_urls(self, urls: list[str]):
         from urllib.parse import urlparse
