@@ -78,6 +78,7 @@ DEFAULT_CONFIG = {
     "keep_norwegian_chars": False,
     "default_dir": str(Path.home() / "Nedlastinger"),
     "overwrite_existing": False,
+    "dark_mode": True,
 }
 
 
@@ -256,7 +257,10 @@ class Downloader(threading.Thread):
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-        ctk.set_appearance_mode("dark")
+        self.cfg = load_config()
+        # Sett dark mode basert på konfigurasjon
+        appearance_mode = "dark" if self.cfg.get("dark_mode", True) else "light"
+        ctk.set_appearance_mode(appearance_mode)
         ctk.set_default_color_theme("blue")
         self.title("Nedlastarn")
         self.geometry("980x720")
@@ -270,7 +274,6 @@ class App(ctk.CTk):
         y = (screen_height - 720) // 2
         self.geometry(f"980x720+{x}+{y}")
        
-        self.cfg = load_config()
         self.worker: Downloader | None = None
         self.msg_q: queue.Queue[str] = queue.Queue()
         self._build_ui()
@@ -374,6 +377,8 @@ class App(ctk.CTk):
         ctk.CTkCheckBox(frm, text="Behold norske tegn i filnavn (æ/ø/å)", variable=self.keep_norw_var).pack(anchor="w", pady=(0,8))
         self.overwrite_var = tk.BooleanVar(value=self.cfg.get("overwrite_existing", False))
         ctk.CTkCheckBox(frm, text="Overskriv eksisterende filer", variable=self.overwrite_var).pack(anchor="w", pady=(0,8))
+        self.dark_mode_var = tk.BooleanVar(value=self.cfg.get("dark_mode", True))
+        ctk.CTkCheckBox(frm, text="Mørk modus", variable=self.dark_mode_var).pack(anchor="w", pady=(0,8))
         dir_row = ctk.CTkFrame(frm); dir_row.pack(fill="x", pady=(6,6))
         ctk.CTkLabel(dir_row, text="Standard lagringsmappe:").pack(anchor="w")
         self.cfg_dir_var = tk.StringVar(value=self.cfg.get("default_dir", DEFAULT_CONFIG["default_dir"]))
@@ -390,12 +395,31 @@ class App(ctk.CTk):
 
 
     def _save_settings(self, win):
+        # Hent den nye verdien fra avkrysningsboksen
+        new_dark_mode = bool(self.dark_mode_var.get())
+        
+        # Lagre alle innstillinger til fil
         self.cfg["keep_norwegian_chars"] = bool(self.keep_norw_var.get())
         self.cfg["overwrite_existing"] = bool(self.overwrite_var.get())
+        self.cfg["dark_mode"] = new_dark_mode
         self.cfg["default_dir"] = self.cfg_dir_var.get() or DEFAULT_CONFIG["default_dir"]
         save_config(self.cfg)
+        
+        # Oppdater standardmappen i hovedvinduet
         self.dir_var.set(self.cfg["default_dir"])
-        self._log("Innstillinger lagret.")
+        
+        # --- HER ER ENDRINGEN ---
+        # Bytt tema umiddelbart hvis det ble endret
+        current_mode = ctk.get_appearance_mode().lower()
+        new_mode_str = "dark" if new_dark_mode else "light"
+        
+        if current_mode != new_mode_str:
+            ctk.set_appearance_mode(new_mode_str)
+            self._log(f"Tema endret til {new_mode_str} modus.")
+        else:
+            self._log("Innstillinger lagret.")
+        
+        # Lukk innstillingsvinduet
         win.destroy()
 
 
