@@ -1,181 +1,129 @@
-========================================
-           NEDLASTARN - BRUKERVEILEDNING
-========================================
+# 📥 Nedlastarn - Brukerveiledning
 
+> En moderne desktop-applikasjon for å laste ned videoer og lyd fra tusenvis av nettsteder med et elegant grafisk grensesnitt.
 
-Nedlastarn er et grafisk program for å laste ned videoer og lyd fra
-tusenvis av nettsteder som YouTube, NRK, Vimeo og mange flere.
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)](https://github.com)
 
+## 🚀 Installasjon
 
-========================================
-            INSTALLASJON
-========================================
+### 1. Installer Python
+Last ned og installer [Python 3.8+](https://python.org) på datamaskinen din.
 
+### 2. Installer avhengigheter
+Åpne kommandolinjen og kjør:
+```bash
+pip install yt-dlp customtkinter pyperclip
+```
 
-1. Sørg for at du har Python installert på datamaskinen din
-   (Last ned fra: https://python.org)
+### 3. Last ned FFmpeg
+- Last ned [FFmpeg](https://ffmpeg.org/download.html)
+- Legg `ffmpeg.exe` i samme mappe som `Nedlastarn.py`
 
+### 4. Start appen
+Dobbeltklikk på `Nedlastarn.py` eller kjør:
+```bash
+python Nedlastarn.py
+```
 
-2. Installer nødvendige avhengigheter ved å åpne kommandolinjen
-   og skrive:
-   
-   pip install yt-dlp customtkinter pyperclip
+## 📖 Grunnleggende bruk
 
+### Steg 1: Lim inn URL
+- Kopier URL-en til videoen du vil laste ned
+- Lim den inn i tekstboksen øverst i programmet
+- Du kan lime inn flere URLer (én per linje)
 
-3. Last ned FFmpeg og legg ffmpeg.exe i samme mappe som nedlastarn.py
-   (Last ned fra: https://ffmpeg.org/download.html)
+### Steg 2: Velg lagringsmappe
+- Klikk **"Bla gjennom..."** for å velge hvor filen skal lagres
+- Standard: Mappen "Nedlastinger" i hjemmemappen din
 
+### Steg 3: Velg format og kvalitet
+- **MP4 (video)**: For videoer - velg kvalitet (Beste/1080p/720p/480p)
+- **MP3 (kun lyd)**: For bare lyd - velg bitrate (128/192/256/320 kbps)
+- **Behold original**: Last ned i originalformat
 
-4. Kjør programmet ved å dobbeltklikke på nedlastarn.py
+### Steg 4: Start nedlasting
+- Klikk **"Last ned"** for å starte
+- Følg fremdriften i loggen nederst
+- Klikk **"Avbryt"** hvis du vil stoppe
 
+## ⚙️ Avanserte funksjoner
 
-========================================
-            GRUNNLEGGENDE BRUK
-========================================
-
-
-STEG 1: Lim inn URL
-------------------
-• Kopier URL-en til videoen du vil laste ned
-• Lim den inn i tekstboksen øverst i programmet
-• Du kan lime inn flere URLer (én per linje)
-
-
-STEG 2: Velg lagringsmappe
---------------------------
-• Klikk "Bla gjennom..." for å velge hvor filen skal lagres
-• Standard: Mappen "Nedlastinger" i hjemmemappen din
-
-
-STEG 3: Velg format og kvalitet
--------------------------------
-• MP4 (video): For videoer - velg kvalitet (Beste/1080p/720p/480p)
-• MP3 (kun lyd): For bare lyd - velg bitrate (128/192/256/320 kbps)
-• Behold original: Last ned i originalformat
-
-
-STEG 4: Start nedlasting
-------------------------
-• Klikk "Last ned" for å starte
-• Følg fremdriften i loggen nederst
-• Klikk "Avbryt" hvis du vil stoppe
-
-
-========================================
-            AVANSERTE FUNKSJONER
-========================================
-
-
-COOKIES FRA NETTLESER
----------------------
+### 🍪 Cookies fra nettleser
 Hvis en video krever innlogging:
-• Velg nettleser (Chrome/Edge/Firefox) i dropdown-menyen
-• Programmet bruker dine innloggede cookies automatisk
+- Velg nettleser (Chrome/Edge/Firefox) i dropdown-menyen
+- Programmet bruker dine innloggede cookies automatisk
 
-
-SPILLELISTER
-------------
+### 📜 Spillelister
 Når du limer inn en spilleliste-URL:
-• Programmet spør om du vil laste ned alle videoer eller bare den første
-• Velg "Alle" for hele spillelisten
-• Velg "Kun første" for bare første video
+- Programmet spør om du vil laste ned alle videoer eller bare den første
+- Velg **"Alle"** for hele spillelisten
+- Velg **"Kun første"** for bare første video
 
+### 📁 Drag & Drop
+- Dra URLer direkte fra nettleseren inn i tekstboksen
+- Dra tekstfiler med URLer inn i programmet
 
-DRAG & DROP
------------
-• Dra URLer direkte fra nettleseren inn i tekstboksen
-• Dra tekstfiler med URLer inn i programmet
+## 🎨 Innstillinger
 
+Klikk **"Innstillinger"** for å endre:
 
-========================================
-            INNSTILLINGER
-========================================
+- ✅ Behold norske tegn i filnavn (æ/ø/å)
+- ✅ Overskriv eksisterende filer
+- ✅ Standard lagringsmappe
+- 🌙 Dark/Light mode
 
+## 💡 Spesielle tips
 
-Klikk "Innstillinger" for å endre:
+### NRK-videoer
+- NRK-videoer lagres automatisk som **MKV** for best kvalitet
+- Andre videoer lagres som **MP4**
 
+### Filnavn
+- Programmet fjerner automatisk ugyldige tegn fra filnavn
+- Du kan velge å beholde norske tegn i innstillingene
 
-• Behold norske tegn i filnavn (æ/ø/å)
-• Overskriv eksisterende filer
-• Standard lagringsmappe
+### Feilsøking
+- Hvis nedlasting feiler, sjekk at URL-en er gyldig
+- For innloggede sider, prøv å velge riktig nettleser
+- Sørg for at FFmpeg er installert og tilgjengelig
 
-
-========================================
-            SPESIELLE TIPS
-========================================
-
-
-NRK-VIDEOER
------------
-• NRK-videoer lagres automatisk som MKV for best kvalitet
-• Andre videoer lagres som MP4
-
-
-FILNAVN
--------
-• Programmet fjerner automatisk ugyldige tegn fra filnavn
-• Du kan velge å beholde norske tegn i innstillingene
-
-
-FEILSØKING
-----------
-• Hvis nedlasting feiler, sjekk at URL-en er gyldig
-• For innloggede sider, prøv å velge riktig nettleser
-• Sørg for at FFmpeg er installert og tilgjengelig
-
-
-========================================
-            STØTTEDE NETTSTEDER
-========================================
-
+## 🌐 Støttede nettsteder
 
 Programmet støtter tusenvis av nettsteder, inkludert:
-• YouTube, Vimeo, Dailymotion
-• NRK, TV2, VGTV
-• Twitter, Instagram, TikTok
-• Og mange flere!
 
+| Kategori | Eksempler |
+|----------|----------|
+| **Video** | YouTube, Vimeo, Dailymotion |
+| **Norske** | NRK, TV2, VGTV |
+| **Sosiale** | Twitter, Instagram, TikTok |
+| **Streaming** | Twitch, Facebook Watch |
 
-Se yt-dlp dokumentasjonen for fullstendig liste.
+> Se [yt-dlp dokumentasjonen](https://github.com/yt-dlp/yt-dlp) for fullstendig liste.
 
+## 🔧 Problemløsning
 
-========================================
-            PROBLEMLØSNING
-========================================
+| Problem | Løsning |
+|---------|---------|
+| "FFmpeg ikke funnet" | Last ned ffmpeg.exe og legg den i samme mappe som programmet |
+| "Mangler yt-dlp" | Kjør: `pip install yt-dlp` |
+| Video krever innlogging | Velg riktig nettleser i dropdown-menyen |
+| Programmet svarer ikke | Klikk "Avbryt" og prøv igjen |
 
+## 🤝 Støtte og bidrag
 
-PROBLEM: "FFmpeg ikke funnet"
-LØSNING: Last ned ffmpeg.exe og legg den i samme mappe som programmet
+Dette programmet bruker kraftige open source-verktøy:
+- **[yt-dlp](https://github.com/yt-dlp/yt-dlp)** - Nedlasting
+- **[FFmpeg](https://ffmpeg.org/)** - Mediebehandling
+- **[CustomTkinter](https://github.com/TomSchimansky/CustomTkinter)** - GUI
 
+For problemer med selve nedlastingen, sjekk [yt-dlp dokumentasjonen](https://github.com/yt-dlp/yt-dlp).
 
-PROBLEM: "Mangler yt-dlp"
-LØSNING: Kjør: pip install yt-dlp
+## ⚠️ Juridisk merknad
 
+Dette verktøyet er kun ment for å laste ned innhold du har lovlig tilgang til. Respekter opphavsrett og nettstedenes vilkår for bruk.
 
-PROBLEM: Video krever innlogging
-LØSNING: Velg riktig nettleser i dropdown-menyen
+---
 
-
-PROBLEM: Programmet svarer ikke
-LØSNING: Klikk "Avbryt" og prøv igjen
-
-
-========================================
-            KONTAKT OG STØTTE
-========================================
-
-
-Dette programmet bruker yt-dlp og FFmpeg.
-• yt-dlp: https://github.com/yt-dlp/yt-dlp
-• FFmpeg: https://ffmpeg.org
-
-
-For problemer med selve nedlastingen, sjekk yt-dlp dokumentasjonen.
-
-
-========================================
-
-
-
-
-
+**Laget med ❤️ i Norge**
