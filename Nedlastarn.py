@@ -11,7 +11,7 @@ import customtkinter as ctk
 
 
 # Avhengigheter:
-# pip install yt-dlp customtkinter pyperclip
+# pip install yt-dlp customtkinter pyperclip (pyperclip er valgfri)
 try:
     from yt_dlp import YoutubeDL
     from yt_dlp.utils import DownloadError, DownloadCancelled
@@ -20,10 +20,22 @@ except Exception as e:
         "Mangler 'yt_dlp'. Installer med: pip install yt-dlp\nFeil: " + str(e)
     )
 
+# Valgfri avhengighet for utklippstavle
+HAS_PYPERCLIP = False
+try:
+    import pyperclip
+    HAS_PYPERCLIP = True
+except ImportError:
+    pass
+
 
 APP_NAME = "Nedlastarn"
 CONFIG_DIR = Path(os.environ.get("APPDATA", str(Path.home()))) / APP_NAME
 CONFIG_PATH = CONFIG_DIR / "config.json"
+
+# Konstanter for filnavn-maler
+DEFAULT_OUTPUT_TEMPLATE = "%(title)s [%(id)s].%(ext)s"
+SIMPLE_OUTPUT_TEMPLATE = "%(title)s.%(ext)s"
 
 
 
@@ -64,6 +76,11 @@ BROWSER_CANDIDATES = {
         Path.home() / "AppData/Local/Mozilla Firefox/firefox.exe",
     ],
 }
+
+
+def _check_ffmpeg() -> bool:
+    """Sjekk om FFmpeg er tilgjengelig"""
+    return shutil.which("ffmpeg") is not None
 
 
 def autodetect_browser() -> str:
@@ -187,7 +204,7 @@ class Downloader(threading.Thread):
         try:
             self.out_dir.mkdir(parents=True, exist_ok=True)
             base_opts = {
-                "outtmpl": str(self.out_dir / "%(title)s [%(id)s].%(ext)s"),
+                "outtmpl": str(self.out_dir / DEFAULT_OUTPUT_TEMPLATE),
                 "progress_hooks": [self.progress_hook], "noprogress": True, "nopart": True,
                 "concurrent_fragment_downloads": 5, "retries": 5, "fragment_retries": 5,
                 "socket_timeout": 20, "overwrites": self.overwrites,
@@ -333,8 +350,13 @@ class App(ctk.CTk):
         cookie_frame = ctk.CTkFrame(row2)
         cookie_frame.pack(side="left", padx=(8, 8))
         ctk.CTkLabel(cookie_frame, text="Cookies fra nettleser").pack(anchor="w")
-        self.browser_var = tk.StringVar(value="Ingen")
-        self.browser_box = ctk.CTkComboBox(cookie_frame, variable=self.browser_var, state="readonly", values=["Ingen", "Chrome", "Edge", "Firefox"])
+        # Auto-detect browser hvis mulig
+        detected_browser = autodetect_browser()
+        browser_values = ["Ingen", "Chrome", "Edge", "Firefox"]
+        default_browser = {"chrome": "Chrome", "edge": "Edge", "firefox": "Firefox"}.get(detected_browser, "Ingen")
+        
+        self.browser_var = tk.StringVar(value=default_browser)
+        self.browser_box = ctk.CTkComboBox(cookie_frame, variable=self.browser_var, state="readonly", values=browser_values)
         self.browser_box.pack()
         pl_frame = ctk.CTkFrame(row2)
         pl_frame.pack(side="left", padx=(8, 0))
@@ -372,6 +394,12 @@ class App(ctk.CTk):
         win.geometry("520x300")
         win.resizable(False, False)
         win.transient(self); win.grab_set()
+        
+        # Sentrer vinduet på hovedvinduet
+        win.update_idletasks()  # Oppdater vinduet før vi beregner posisjon
+        x = self.winfo_x() + (self.winfo_width() // 2) - (520 // 2)
+        y = self.winfo_y() + (self.winfo_height() // 2) - (300 // 2)
+        win.geometry(f"520x300+{x}+{y}")
         frm = ctk.CTkFrame(win); frm.pack(fill="both", expand=True, padx=14, pady=14)
         self.keep_norw_var = tk.BooleanVar(value=self.cfg.get("keep_norwegian_chars", False))
         ctk.CTkCheckBox(frm, text="Behold norske tegn i filnavn (æ/ø/å)", variable=self.keep_norw_var).pack(anchor="w", pady=(0,8))
@@ -444,12 +472,23 @@ class App(ctk.CTk):
         else: self.nrk_hint.configure(text="")
            
     def _paste_clipboard(self):
-        try:
-            import pyperclip
-            text = pyperclip.paste()
-        except Exception:
-            try: text = self.clipboard_get()
-            except Exception: messagebox.showwarning("Lim inn", "Kunne ikke lese fra utklippstavlen."); return
+        text = None
+        
+        # Prøv først pyperclip hvis tilgjengelig
+        if HAS_PYPERCLIP:
+            try:
+                text = pyperclip.paste()
+            except Exception:
+                pass
+        
+        # Fallback til tkinter's clipboard_get
+        if text is None:
+            try:
+                text = self.clipboard_get()
+            except Exception:
+                messagebox.showwarning("Lim inn", "Kunne ikke lese fra utklippstavlen.")
+                return
+        
         if text:
             self.url_box.insert(tk.END, text.strip() + "\n")
             self._update_nrk_hint()
@@ -501,6 +540,14 @@ class App(ctk.CTk):
         if invalid:
             messagebox.showerror("Ugyldige URLer", "Disse er ikke gyldige URLer:\n\n" + "\n".join(invalid))
             return
+        
+        # Sjekk FFmpeg før nedlasting starter
+        if not _check_ffmpeg():
+            messagebox.showerror("FFmpeg ikke funnet", 
+                "FFmpeg er ikke tilgjengelig på systemet.\n\n"
+                "Last ned ffmpeg.exe og legg den i samme mappe som programmet,\n"
+                "eller installer FFmpeg systemvidt.")
+            return
         out_dir = Path(self.dir_var.get())
         mode = self.format_var.get()
         quality = {"Beste": "best", "1080p": "1080p", "720p": "720p", "480p": "480p"}[self.quality_var.get()]
@@ -517,6 +564,7 @@ class App(ctk.CTk):
     def _cancel_download(self):
         if self.worker and self.worker.is_alive():
             self.worker.cancel()
+            self.btn_cancel.configure(text="Avbryter...", state="disabled")
             self._log("Avbryter…")
            
     def _log(self, text: str):
@@ -545,6 +593,7 @@ class App(ctk.CTk):
         except queue.Empty: pass
         if self.worker and not self.worker.is_alive():
             self._set_ui_enabled(True)
+            self.btn_cancel.configure(text="Avbryt")  # Tilbakestill knapptekst
             self.worker = None
         self.after(100, self._poll_messages)
 
@@ -565,13 +614,15 @@ class App(ctk.CTk):
         self.progbar.set(max(0.0, min(100.0, pct)) / 100.0)
         spd_txt = f"{speed_bps/1024/1024:.2f} MB/s" if speed_bps else "–"
         self.speed_label.configure(text=f"Hastighet: {spd_txt}   |   Gjenstår: {self._fmt_eta(eta_s)}")
-        if item_info:
+        if item_info and (item_info.get("title") or item_info.get("i") or item_info.get("n")):
             i, n, title = item_info.get("i"), item_info.get("n"), item_info.get("title")
+            idx_txt = f"{i}/{n} – " if i and n else ""
             shown = title or (Path(filename).name if filename else "–")
-            if i and n: self.current_item_label.configure(text=f"Element: {i}/{n} – {shown}")
-            else: self.current_item_label.configure(text=f"Element: {shown}")
-        elif filename: self.current_item_label.configure(text=f"Element: {Path(filename).name}")
-        else: self.current_item_label.configure(text="Element: –")
+            self.current_item_label.configure(text=f"Element: {idx_txt}{shown}")
+        elif filename: 
+            self.current_item_label.configure(text=f"Element: {Path(filename).name}")
+        else: 
+            self.current_item_label.configure(text="Element: –")
 
 
     def _toggle_quality_state(self):

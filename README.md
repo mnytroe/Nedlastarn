@@ -21,8 +21,9 @@
 1. **Installer Python 3.8+** fra [python.org](https://python.org)
 2. **Installer avhengigheter**:
    ```bash
-   pip install yt-dlp customtkinter pyperclip
+   pip install yt-dlp customtkinter
    ```
+   > **Valgfri**: `pip install pyperclip` for bedre utklippstavle-støtte
 3. **Last ned FFmpeg** og legg `ffmpeg.exe` i samme mappe
 4. **Kjør appen**:
    ```bash
@@ -54,6 +55,7 @@
 
 ### 🍪 Cookies fra nettleser
 Hvis en video krever innlogging:
+- Programmet detekterer automatisk tilgjengelige nettlesere
 - Velg nettleser (Chrome/Edge/Firefox) i dropdown-menyen
 - Programmet bruker dine innloggede cookies automatisk
 
@@ -89,6 +91,7 @@ Klikk **"Innstillinger"** for å endre:
 ### Feilsøking
 - Hvis nedlasting feiler, sjekk at URL-en er gyldig
 - For innloggede sider, prøv å velge riktig nettleser
+- Programmet sjekker automatisk om FFmpeg er tilgjengelig før nedlasting starter
 - Sørg for at FFmpeg er installert og tilgjengelig
 
 ## 🌐 Støttede nettsteder
