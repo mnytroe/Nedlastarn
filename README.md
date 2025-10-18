@@ -5,7 +5,7 @@
 [![Python](https://img.shields.io/badge/Made%20with-Python-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)](https://github.com)
-[![Downloads](https://img.shields.io/github/downloads/mnytroe/Nedlastarn/total.svg)](https://github.com/mnytroe/Nedlastarn/releases)
+[![Downloads](https://img.shields.io/github/downloads/mnytroe/Nedlastarn/latest/total.svg)](https://github.com/mnytroe/Nedlastarn/releases)
 
 ## 🚀 Installasjon
 
