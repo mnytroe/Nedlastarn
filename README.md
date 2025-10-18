@@ -2,30 +2,32 @@
 
 > En moderne desktop-applikasjon for å laste ned videoer og lyd fra tusenvis av nettsteder med et elegant grafisk grensesnitt.
 
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
+[![Python](https://img.shields.io/badge/Made%20with-Python-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)](https://github.com)
+[![Downloads](https://img.shields.io/github/downloads/mnytroe/Nedlastarn/total.svg)](https://github.com/mnytroe/Nedlastarn/releases)
 
 ## 🚀 Installasjon
 
-### 1. Installer Python
-Last ned og installer [Python 3.8+](https://python.org) på datamaskinen din.
+### Metode 1: Executable (Anbefalt)
+1. **Last ned fra [Releases](https://github.com/mnytroe/Nedlastarn/releases)**
+2. **Pakk ut ZIP-filen**
+3. **Last ned FFmpeg** og legg `ffmpeg.exe` i samme mappe
+4. **Kjør `Nedlastarn.exe`**
 
-### 2. Installer avhengigheter
-Åpne kommandolinjen og kjør:
-```bash
-pip install yt-dlp customtkinter pyperclip
-```
+> ⚠️ **Windows Defender**: Kan advare om usignert executable. Dette er normalt - klikk "Mer info" → "Kjør likevel" eller legg til unntak.
 
-### 3. Last ned FFmpeg
-- Last ned [FFmpeg](https://ffmpeg.org/download.html)
-- Legg `ffmpeg.exe` i samme mappe som `Nedlastarn.py`
-
-### 4. Start appen
-Dobbeltklikk på `Nedlastarn.py` eller kjør:
-```bash
-python Nedlastarn.py
-```
+### Metode 2: Fra kildekode
+1. **Installer Python 3.8+** fra [python.org](https://python.org)
+2. **Installer avhengigheter**:
+   ```bash
+   pip install yt-dlp customtkinter pyperclip
+   ```
+3. **Last ned FFmpeg** og legg `ffmpeg.exe` i samme mappe
+4. **Kjør appen**:
+   ```bash
+   python Nedlastarn.py
+   ```
 
 ## 📖 Grunnleggende bruk
 
