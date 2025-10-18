@@ -5,6 +5,32 @@ Alle betydelige endringer i dette prosjektet vil bli dokumentert i denne filen.
 Formatet er basert på [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 og dette prosjektet følger [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-01-27
+
+### Added
+- **Automatisk nettleser-deteksjon** - appen detekterer og velger automatisk tilgjengelige nettlesere
+- **FFmpeg-validering** - sjekker om FFmpeg er tilgjengelig før nedlasting starter
+- **Forbedret pyperclip-støtte** - valgfri avhengighet med elegant fallback til tkinter
+- **Konfigurerbar filnavn-mal** - konstant for utdatafilnavn som kan enkelt endres
+
+### Changed
+- **pyperclip er nå valgfri** - appen fungerer uten pyperclip med fallback til tkinter's clipboard
+- **Forbedret progress-visning** - forenklet logikk for element-labels
+- **Bedre feilhåndtering** - mer robust håndtering av utklippstavle og avhengigheter
+- **Oppdatert dokumentasjon** - README reflekterer nye funksjoner og valgfrie avhengigheter
+
+### Fixed
+- **Innstillingsvindu sentrering** - vinduet åpner nå midt på hovedvinduet
+- **Visuell tilbakemelding ved avbrytelse** - knappen viser "Avbryter..." umiddelbart
+- **Progress-logikk** - forenklet og mer lesbar kode for element-visning
+- **Requirements.txt** - pyperclip markert som valgfri avhengighet
+
+### Technical
+- **Modulær arkitektur** - bedre separasjon av ansvar med dedikerte funksjoner
+- **Konstant-definisjoner** - hardkodede verdier flyttet til konstanter
+- **Forbedret feilhåndtering** - mer spesifikke exception-håndteringer
+- **Kodekvalitet** - forenklet logikk og bedre lesbarhet
+
 ## [1.0.1] - 2025-10-18
 
 ### Added
