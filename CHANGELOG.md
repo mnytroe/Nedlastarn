@@ -24,6 +24,7 @@ og dette prosjektet følger [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Visuell tilbakemelding ved avbrytelse** - knappen viser "Avbryter..." umiddelbart
 - **Progress-logikk** - forenklet og mer lesbar kode for element-visning
 - **Requirements.txt** - pyperclip markert som valgfri avhengighet
+- **"Åpne mappe"-funksjon** - sjekker og oppretter mappe automatisk før åpning
 
 ### Technical
 - **Modulær arkitektur** - bedre separasjon av ansvar med dedikerte funksjoner
