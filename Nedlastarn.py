@@ -353,7 +353,7 @@ class App(ctk.CTk):
         # Auto-detect browser hvis mulig
         detected_browser = autodetect_browser()
         browser_values = ["Ingen", "Chrome", "Edge", "Firefox"]
-        default_browser = {"chrome": "Chrome", "edge": "Edge", "firefox": "Firefox"}.get(detected_browser, "Ingen")
+        default_browser = "Ingen"  # Endret fra autodetektert til alltid "Ingen"
         
         self.browser_var = tk.StringVar(value=default_browser)
         self.browser_box = ctk.CTkComboBox(cookie_frame, variable=self.browser_var, state="readonly", values=browser_values)
